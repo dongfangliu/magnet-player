@@ -1,4 +1,4 @@
-require('./webtorrent.js');
+require('./webtor.js');
 
 var clipboard = new Clipboard('#share-url-btn');
 clipboard.on('success', function (e) {

@@ -1,5 +1,5 @@
 (function(){function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s}return e})()({1:[function(require,module,exports){
-require('./webtorrent.js');
+require('./webtor.js');
 
 var clipboard = new Clipboard('#share-url-btn');
 clipboard.on('success', function (e) {
@@ -38,135 +38,134 @@ function fitMagnetInput() {
 	$('#magnet-input input').outerWidth(formW - buttonW);
 }
 
-},{"./webtorrent.js":2}],2:[function(require,module,exports){
+},{"./webtor.js":2}],2:[function(require,module,exports){
 (function (global){
-var moment = require('moment')
-var prettyBytes = require('pretty-bytes')
-
-// HTML elements
-var $body = $('body')
-var $progressBar = $('#progressBar')
-var $streamedFileName = $('#streamedFileName')
-var $numPeers = $('#numPeers')
-var $downloaded = $('#downloaded')
-var $total = $('#total')
-var $remaining = $('#remaining')
-var $uploadSpeed = $('#uploadSpeed')
-var $downloadSpeed = $('#downloadSpeed')
-
-var announceList = [
-['udp://tracker.openbittorrent.com:80'],
-['udp://tracker.internetwarriors.net:1337'],
-['udp://tracker.leechers-paradise.org:6969'],
-['udp://tracker.coppersurfer.tk:6969'],
-['udp://exodus.desync.com:6969'],
-['wss://tracker.webtorrent.io'],
-['wss://tracker.btorrent.xyz'],
-['wss://tracker.openwebtorrent.com'],
-['wss://tracker.fastcast.nz']
-]
-
-global.WEBTORRENT_ANNOUNCE = announceList
-.map(function (arr) {
-	return arr[0]
-})
-.filter(function (url) {
-	return url.indexOf('wss://') === 0 || url.indexOf('ws://') === 0
-})
-
-var client = new WebTorrent()
-
-client.on('error', function(err) {
-	console.error('ERROR: ' + err.message)
-})
 
 // Download by form input
-$('form').submit(function(e) {
-	e.preventDefault() // Prevent page refresh
+    $('form').submit(function(e) {
+        e.preventDefault() // Prevent page refresh
 
-	var torrentId = $('form input[name=torrentId]').val()
+        var torrentId = $('form input[name=torrentId]').val()
 
-	if (torrentId.length > 0)
-		downloadTorrent(torrentId)
-})
+        if (torrentId.length > 0)
+            downloadTorrent(torrentId)
+    })
 
 // Download by URL hash
-onHashChange()
-window.addEventListener('hashchange', onHashChange)
-function onHashChange () {
-	var hash = decodeURIComponent(window.location.hash.substring(1)).trim()
-	if (hash !== '') downloadTorrent(hash)
-}
+    onHashChange()
+    window.addEventListener('hashchange', onHashChange)
+    function onHashChange () {
+        var hash = decodeURIComponent(window.location.hash.substring(1)).trim()
+        if (hash !== '') downloadTorrent(hash)
+    }
 
-function downloadTorrent(torrentId) {
-	console.log('Downloading torrent from ' + torrentId)
-	client.add(torrentId, onTorrent)
-}
+    function downloadTorrent(torrentId) {
+        console.log('Downloading torrent from ' + torrentId)
+        console.log("this is webtor")
+        onTorrent(torrentId)
+    }
 
-function onTorrent(torrent) {
-	torrent.on('warning', console.log)
-	torrent.on('error', console.log)
+    function onTorrent(torrent) {
 
-	console.log('Got torrent metadata!')
+        // Display name of the file being streamed
 
-	// Find largest file
-	var largestFile = torrent.files[0]
-	for (var i = 1; i < torrent.files.length; i++) {
-		if (torrent.files[i].length > largestFile.length)
-			largestFile = torrent.files[i]
-	}
+        // Update clipboard share url
+        $('#share-url').val('https://ferrolho.github.io/magnet-player/#' + torrent.infoHash);
 
-	// Display name of the file being streamed
-	$streamedFileName.html(largestFile.name)
 
-	// Update clipboard share url
-	$('#share-url').val('https://ferrolho.github.io/magnet-player/#' + torrent.infoHash);
+        // hide magnet input
+        $('#magnet-input').slideUp()
 
-	// Stream the file in the browser
-	largestFile.appendTo('#output')
+        // show player
+        $('#hero').slideDown()
 
-	// hide magnet input
-	$('#magnet-input').slideUp()
 
-	// show player
-	$('#hero').slideDown()
 
-	// Trigger statistics refresh
-	torrent.on('done', onDone)
-	setInterval(onProgress, 500)
-	onProgress()
 
-	// Statistics
-	function onProgress () {
-		// Peers
-		$numPeers.html(torrent.numPeers + (torrent.numPeers === 1 ? ' peer' : ' peers'))
-
-		// Progress
-		var percent = Math.round(torrent.progress * 100 * 100) / 100
-		$progressBar.width(percent + '%')
-		$downloaded.html(prettyBytes(torrent.downloaded))
-		$total.html(prettyBytes(torrent.length))
-
-		// Remaining time
-		var remaining
-		if (torrent.done) {
-			remaining = 'Done'
-		} else {
-			remaining = moment.duration(torrent.timeRemaining / 1000, 'seconds').humanize()
-			remaining = remaining[0].toUpperCase() + remaining.substring(1) + ' remaining'
-		}
-		$remaining.html(remaining)
-
-		// Speed rates
-		$downloadSpeed.html(prettyBytes(torrent.downloadSpeed) + '/s')
-		$uploadSpeed.html(prettyBytes(torrent.uploadSpeed) + '/s')
-	}
-
-	function onDone () {
-		$body.addClass('is-seed')
-		onProgress()
-	}
-}
+        window.webtor = window.webtor || [];
+        window.webtor.push({
+            id: 'output',
+            baseUrl: 'https://webtor.io',
+            // baseUrl: 'http://192.168.0.100:4000',
+            magnet: 'magnet:?xt=urn:btih:'+torrent,
+            // magnet: 'magnet:?xt=urn:btih:ca540adb8d37eb222d75aeca6954486842f72765',
+            // width: '100%',
+            // height: '100%',
+            features: {
+                continue:    false,
+                // title:       false,
+                // p2pProgress: false,
+                // subtitles:   false,
+                // settings:    false,
+                // fullscreen:  false,
+                // playpause:   false,
+                // currentTime: false,
+                // timeline:    false,
+                // duration:    false,
+                // volume:      false,
+                // chromecast:  false,
+            },
+            on: function(e) {
+                if (e.name == window.webtor.TORRENT_FETCHED) {
+                    console.log('Torrent fetched!', e.data.files);
+                    var p = e.player;
+                    var files = document.getElementById('files');
+                    for (const f of e.data.files) {
+                        if (!f.name.endsWith('.mp4')) continue;
+                        var a = document.createElement('a');
+                        a.setAttribute('href', f.path);
+                        a.innerText = f.name;
+                        files.appendChild(a);
+                        a.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            p.open(e.target.getAttribute('href'));
+                            return false;
+                        });
+                    }
+                }
+                if (e.name == window.webtor.TORRENT_ERROR) {
+                    console.log('Torrent error!')
+                }
+                if (e.name == window.webtor.INITED) {
+                    var p = e.player;
+                    document.getElementById('play').addEventListener('click', function(ev) {
+                        p.play();
+                    });
+                    document.getElementById('pause').addEventListener('click', function(ev) {
+                        p.pause();
+                    });
+                }
+                if (e.name == window.webtor.PLAYER_STATUS) {
+                    document.getElementById('player-status').innerHTML = e.data;
+                }
+                if (e.name == window.webtor.OPEN) {
+                    console.log(e.data);
+                }
+                if (e.name == window.webtor.CURRENT_TIME) {
+                    document.getElementById('current-time').innerHTML = parseInt(e.data);
+                }
+                if (e.name == window.webtor.DURATION) {
+                    document.getElementById('duration').innerHTML = parseInt(e.data);
+                }
+                if (e.name == window.webtor.OPEN_SUBTITLES) {
+                    console.log(e.data);
+                }
+            },
+            i18n: {
+                en: {
+                    common: {
+                        "prepare to play": "Preparing Video Stream... Please Wait...",
+                    },
+                    stat: {
+                        "seeding": "Seeding",
+                        "waiting": "Client initialization",
+                        "waiting for peers": "Waiting for peers",
+                        "from": "from",
+                    },
+                },
+            }
+        });
+    }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"moment":3,"pretty-bytes":4}],3:[function(require,module,exports){
