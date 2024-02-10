@@ -1,0 +1,30 @@
+I"u<p><strong>Magnet Player</strong> is a site where anyone can stream torrents directly from their browser.</p>
+
+<p>It uses <strong><a href="https://webtorrent.io/">WebTorrent</a></strong> - the first torrent client that works in the browser. <strong>WebTorrent</strong> uses <strong><a href="https://webrtc.org/">WebRTC</a></strong> for true peer-to-peer transport. No browser plugin, extension, or installation is required.</p>
+
+<hr />
+
+<h3 id="note">Note</h3>
+
+<p><em>In the browser, WebTorrent can only download torrents that are seeded by a WebRTC-capable torrent client.</em></p>
+
+<blockquote>
+  <p>What does that mean?</p>
+</blockquote>
+
+<p>It means that, for now, not every torrent will work on this site.</p>
+
+<blockquote>
+  <p>Why??</p>
+</blockquote>
+
+<p>Because most people use native torrent clients like <em>BitTorrent</em>, <em>Transmission</em>, <em>μTorrent</em>, etc. which do not use the <a href="https://en.wikipedia.org/wiki/WebRTC">WebRTC</a> transport protocol, but the <a href="https://en.wikipedia.org/wiki/Transmission_Control_Protocol">TCP</a>/<a href="https://en.wikipedia.org/wiki/Micro_Transport_Protocol">uTP</a>.</p>
+
+<blockquote>
+  <p>Will I be able to stream more torrents in the future?</p>
+</blockquote>
+
+<p><strong>Yes!</strong> It is just a matter of time until developers add WebTorrent support for the most popular native torrent clients. <strong><a href="http://www.vuze.com/">Vuze</a></strong> <a href="https://wiki.vuze.com/w/WebTorrent">already has support</a> for WebTorrent!</p>
+
+<p>You can subscribe to <a href="https://github.com/feross/webtorrent/issues/369">this issue</a> for updates on this matter.</p>
+:ET
