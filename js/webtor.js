@@ -48,8 +48,8 @@ function onTorrent(torrent) {
 		// baseUrl: 'http://192.168.0.100:4000',
 		magnet: 'magnet:?xt=urn:btih:'+torrent,
 		// magnet: 'magnet:?xt=urn:btih:ca540adb8d37eb222d75aeca6954486842f72765',
-		// width: '100%',
-		// height: '100%',
+		width: '100%',
+		height: '100%',
 		features: {
 			continue:    false,
 			// title:       false,
@@ -94,21 +94,23 @@ function onTorrent(torrent) {
 					p.pause();
 				});
 			}
-			if (e.name == window.webtor.PLAYER_STATUS) {
-				document.getElementById('player-status').innerHTML = e.data;
-			}
+			// if (e.name == window.webtor.PLAYER_STATUS) {
+			// 	document.getElementById('player-status').innerHTML = e.data;
+			// }
 			if (e.name == window.webtor.OPEN) {
 				console.log(e.data);
 			}
-			if (e.name == window.webtor.CURRENT_TIME) {
-				document.getElementById('current-time').innerHTML = parseInt(e.data);
-			}
+			// if (e.name == window.webtor.CURRENT_TIME) {
+			// 	document.getElementById('current-time').innerHTML = parseInt(e.data);
+			// }
 			if (e.name == window.webtor.DURATION) {
-				document.getElementById('duration').innerHTML = parseInt(e.data);
+				// document.getElementById('duration').innerHTML = parseInt(e.data);
+				
 			}
 			if (e.name == window.webtor.OPEN_SUBTITLES) {
 				console.log(e.data);
 			}
+			
 		},
 		i18n: {
 		en: {

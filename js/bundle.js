@@ -89,8 +89,7 @@ function fitMagnetInput() {
             // baseUrl: 'http://192.168.0.100:4000',
             magnet: 'magnet:?xt=urn:btih:'+torrent,
             // magnet: 'magnet:?xt=urn:btih:ca540adb8d37eb222d75aeca6954486842f72765',
-            // width: '100%',
-            // height: '100%',
+            width: '100%',
             features: {
                 continue:    false,
                 // title:       false,
