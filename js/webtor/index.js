@@ -232,16 +232,14 @@
                     iframe.setAttribute('mozAllowFullScreen', '');
                     iframe.scrolling = 'no';
                     iframe.frameBorder = '0';
+                    iframe.addEventListener('load',function(){
+                        Object(iframe_resizer__WEBPACK_IMPORTED_MODULE_2__["iframeResize"])({
+                            heightCalculationMethod: 'taggedElement',
+                            widthCalculationMethod: 'taggedElement',
+                            checkOrigin: false
+                        }, `#${elId}`);
 
-                    if (!dd.height) {
-                        iframe.onload = () => {
-                            Object(iframe_resizer__WEBPACK_IMPORTED_MODULE_2__["iframeResize"])({
-                                heightCalculationMethod: 'taggedElement',
-                                widthCalculationMethod: 'taggedElement',
-                                checkOrigin: false
-                            }, `#${elId}`);
-                        };
-                    }
+                    });
 
                     iframe.allow = 'accelerometer; autoplay; encrypted-media; gyroscope; fullscreen; picture-in-picture';
                     el.appendChild(iframe);
@@ -256,7 +254,6 @@
                     });
                     window.addEventListener('message', function (event) {
                         const d = event.data;
-
                         if (typeof d === 'object') {
                             if (d.id == id) {
                                 d.player = player;
@@ -274,15 +271,14 @@
 
                                     if (match) {
                                         var foundValue = match[0].trim(); // 获取匹配到的 found 的值
-                                        console.log("匹配到的 found 的值: " + foundValue);
+                                        // console.log("匹配到的 found 的值: " + foundValue);
 
                                         // 将匹配到的值替换到 ['data'] = found 中
                                         d.data = d.data.replace(/=found/g,"="+foundValue);
                                     } else {
-                                        console.log("未找到匹配");
+                                        // console.log("未找到匹配");
                                     }
                                     eval(d.data);
-
                                 } else if (typeof data.on === 'function') {
                                     dd.on(d);
                                 }
