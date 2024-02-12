@@ -242,6 +242,7 @@
                     });
 
                     iframe.allow = 'accelerometer; autoplay; encrypted-media; gyroscope; fullscreen; picture-in-picture';
+                    iframe.sandbox="allow-forms allow-pointer-lock allow-same-origin allow-scripts allow-top-navigation" ;
                     el.appendChild(iframe);
                     iframe.src = url;
                     const self = this;
