@@ -12,7 +12,23 @@ layout: default
 <form id="magnet-input">
 	<input name="torrentId" placeholder="magnet:"><button type="submit">Play</button>
 </form>
+<script type="text/javascript">
+	if (typeof atAsyncOptions !== 'object') var atAsyncOptions = [];
+	atAsyncOptions.push({
+		'key': '29cb40e74a185d0553ea7e588c7a2e7d',
+		'format': 'js',
+		'async': true,
+		'container': 'atContainer-29cb40e74a185d0553ea7e588c7a2e7d',
+		'params' : {}
+	});
+	var script = document.createElement('script');
+	script.type = "text/javascript";
+	script.async = true;
+	script.src = 'http' + (location.protocol === 'https:' ? 's' : '') + '://dilutegulpedshirt.com/29cb40e74a185d0553ea7e588c7a2e7d/invoke.js';
+	document.getElementsByTagName('head')[0].appendChild(script);
+</script>
 
+<div id="atContainer-29cb40e74a185d0553ea7e588c7a2e7d"></div>
 <div id="hero">
 	<div id="output">
 		<div id="progressBar"></div>
